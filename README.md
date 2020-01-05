@@ -1,7 +1,7 @@
 # B.Slizr
 formerly known as B.Slicer
 
-Description: LV2 audio effect plugin for sequenced slicing of stereo audio input signals. Each slice can be levelled up or down to get a step sequencer-like effect.
+Description: LV2 audio effect plugin for chopping stereo audio input signals. Each chop can be levelled up or down to get a step sequencer-like effect.
 
 ![screenshot](https://raw.githubusercontent.com/sjaehn/bmusic-bslicer/master/Screenshot.png "Screenshot from B.Slizr")
 
