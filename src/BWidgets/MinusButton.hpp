@@ -1,5 +1,5 @@
-/* ToggleButton.hpp
- * Copyright (C) 2018  Sven Jähnichen
+/* MinusButton.hpp
+ * Copyright (C) 2018, 2019  Sven Jähnichen
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,25 +15,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef BWIDGETS_TOGGLEBUTTON_HPP_
-#define BWIDGETS_TOGGLEBUTTON_HPP_
+#ifndef BWIDGETS_MINUSBUTTON_HPP_
+#define BWIDGETS_MINUSBUTTON_HPP_
 
 #include "Button.hpp"
+#include "Label.hpp"
 
 namespace BWidgets
 {
 /**
- * Class BWidgets::ToggleButton
+ * Class BWidgets::MinusButton
  *
- * Basic toggle button widget. Is is a BWidgets::Button and thus a
+ * Text button widget. Is is a BWidgets::Button and thus a
  * BWidgets::ValueWidget having two conditions: on (value != 0) or off
  * (value == 0)
  */
-class ToggleButton : public Button
+class MinusButton : public Button
 {
 public:
-	ToggleButton ();
-	ToggleButton (const double x, const double y, const double width, const double height, const std::string& name, double defaultValue = 0.0);
+	MinusButton ();
+	MinusButton (const double x, const double y, const double width, const double height, const std::string& name, double defaultValue = 0.0);
 
 	/**
 	 * Pattern cloning. Creates a new instance of the widget and copies all
@@ -41,23 +42,10 @@ public:
 	 */
 	virtual Widget* clone () const override;
 
-	/**
-	 * Handles the BEvents::BUTTON_PRESS_EVENT.
-	 * @param event Pointer to a pointer event emitted by the same widget.
-	 */
-	virtual void onButtonPressed (BEvents::PointerEvent* event) override;
-
-	/**
-	 * Overrides the BEvents::BUTTON_RELEASED_EVENT handled by
-	 * BWidgets::Button.
-	 * @param event Pointer to a pointer event emitted by the same widget.
-	 */
-	virtual void onButtonReleased (BEvents::PointerEvent* event) override;
+protected:
+	virtual void draw (const BUtilities::RectArea& area) override;
 };
 
 }
 
-
-
-
-#endif /* BWIDGETS_TOGGLEBUTTON_HPP_ */
+#endif /* BWIDGETS_MINUSBUTTON_HPP_ */
