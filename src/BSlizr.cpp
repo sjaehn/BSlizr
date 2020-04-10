@@ -34,7 +34,7 @@ BSlizr::BSlizr (double samplerate, const LV2_Feature* const* features) :
 	audioInput1(NULL), audioInput2(NULL), audioOutput1(NULL), audioOutput2(NULL),
 	sequencesperbar (4), nrSteps(16), attack(0.2), release (0.2),
 	controlPort1(NULL), controlPort2(NULL),  notifyPort(NULL),
-	record_on(true), monitorpos(-1), message ()
+	record_on(false), monitorpos(-1), message ()
 
 {
 	notifications.fill (defaultNotification);
@@ -122,12 +122,9 @@ void BSlizr::run (uint32_t n_samples)
 	}
 
 	// Prepare forge buffer and initialize atom sequence
-	if (record_on)
-	{
-		const uint32_t space = notifyPort->atom.size;
-		lv2_atom_forge_set_buffer(&forge, (uint8_t*) notifyPort, space);
-		lv2_atom_forge_sequence_head(&forge, &notify_frame, 0);
-	}
+	const uint32_t space = notifyPort->atom.size;
+	lv2_atom_forge_set_buffer(&forge, (uint8_t*) notifyPort, space);
+	lv2_atom_forge_sequence_head(&forge, &notify_frame, 0);
 
 	const LV2_Atom_Sequence* in = controlPort1;
 	uint32_t last_t =0;
@@ -204,10 +201,10 @@ void BSlizr::run (uint32_t n_samples)
 	{
 		notifyGUI();
 		if (message.isScheduled ()) notifyMessageToGui ();
-
-		// Close off sequence
-		lv2_atom_forge_pop(&forge, &notify_frame);
 	}
+
+	// Close off sequence
+	lv2_atom_forge_pop(&forge, &notify_frame);
 }
 
 void BSlizr::notifyGUI()
