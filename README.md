@@ -10,6 +10,7 @@ Installation
 a) Install the bslizr package for your system
 * [Arch linux](https://www.archlinux.org/packages/community/x86_64/bslizr/) by David Runge
 * [NixOS](https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/audio/bslizr/default.nix) by Bart Brouns
+* [Debian](https://kx.studio/Repositories:Plugins) by falkTX
 * Check https://repology.org/project/bslizr/versions for other systems
 
 b) Build your own binaries in the following three steps.
