@@ -60,6 +60,9 @@ What's new
 -----------
 * Improved stability
 * Improved visibility of sliders
+* gcc10/std problem fixed
+* Editable dial and slider values
+* Update pugl
 
 Usage
 -----

@@ -218,7 +218,7 @@ private:
 
 
 BSlizr_GUI::BSlizr_GUI (const char *bundle_path, const LV2_Feature *const *features, PuglNativeWindow parentWindow) :
-	Window (800, 560, "B.Slizr", parentWindow, true),
+	Window (800, 560, "B.Slizr", parentWindow, true, PUGL_MODULE, 0),
 	controller (NULL), write_function (NULL),
 
 	mContainer (0, 0, 800, 560, "main"),

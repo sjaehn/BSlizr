@@ -40,7 +40,9 @@ B_OBJECTS = $(addprefix $(BUNDLE)/, $(DSP_OBJ) $(GUI_OBJ))
 FILES = manifest.ttl BSlizr.ttl surface.png LICENSE
 B_FILES = $(addprefix $(BUNDLE)/, $(FILES))
 
-DSP_INCL = src/Message.cpp
+DSP_INCL = \
+	src/Message.cpp \
+	src/BUtilities/stof.cpp
 
 GUI_INCL = \
 	src/BWidgets/DrawingSurface.cpp \
@@ -63,9 +65,12 @@ GUI_INCL = \
 	src/BWidgets/BColors.cpp \
 	src/screen.c \
 	src/BWidgets/cairoplus.c \
-	src/BWidgets/pugl/pugl_x11_cairo.c \
-	src/BWidgets/pugl/pugl_x11.c \
-	src/BUtilities/to_string.cpp
+	src/BWidgets/pugl/implementation.c \
+	src/BWidgets/pugl/x11_stub.c \
+	src/BWidgets/pugl/x11_cairo.c \
+	src/BWidgets/pugl/x11.c \
+	src/BUtilities/to_string.cpp \
+	src/BUtilities/stof.cpp
 
 ifeq ($(shell $(PKG_CONFIG) --exists lv2 || echo no), no)
   $(error LV2 not found. Please install LV2 first.)

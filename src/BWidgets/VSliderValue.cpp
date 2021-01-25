@@ -17,6 +17,7 @@
 
 #include "VSliderValue.hpp"
 #include "../BUtilities/to_string.hpp"
+#include "../BUtilities/stof.hpp"
 
 namespace BWidgets
 {
@@ -37,19 +38,24 @@ VSliderValue::VSliderValue () :
 {}
 
 VSliderValue::VSliderValue (const double x, const double y, const double width, const double height, const std::string& name,
-	  const double value, const double min, const double max, const double step,
-	  const std::string& valueFormat) :
+	  		    const double value, const double min, const double max, const double step,
+	  		    const std::string& valueFormat, LabelPosition valuePos) :
 	VSlider (x, y, width, height, name, value, min, max, step),
 	valueDisplay(0, 0, width, height, name),
+	valPosition (valuePos == LABEL_BOTTOM ? LABEL_BOTTOM : LABEL_TOP),
 	valFormat (valueFormat), displayArea ()
 {
 	valueDisplay.setText (BUtilities::to_string (value, valueFormat));
+	valueDisplay.setScrollable (false);
+	valueDisplay.setEditable (true);
+	valueDisplay.setCallbackFunction(BEvents::EventType::POINTER_DRAG_EVENT, displayDraggedCallback);
+	valueDisplay.setCallbackFunction(BEvents::EventType::MESSAGE_EVENT, displayMessageCallback);
 	add (valueDisplay);
 }
 
 VSliderValue::VSliderValue (const VSliderValue& that) :
-		VSlider (that), valueDisplay (that.valueDisplay), valFormat (that.valFormat),
-		displayArea (that.displayArea)
+		VSlider (that), valueDisplay (that.valueDisplay), valPosition (that.valPosition),
+		valFormat (that.valFormat), displayArea (that.displayArea)
 {
 	add (valueDisplay);
 }
@@ -59,6 +65,7 @@ VSliderValue& VSliderValue::operator= (const VSliderValue& that)
 	release (&valueDisplay);
 
 	displayArea = that.displayArea;
+	valPosition = that.valPosition;
 	valFormat = that.valFormat;
 	valueDisplay = that.valueDisplay;
 	VSlider::operator= (that);
@@ -75,6 +82,14 @@ void VSliderValue::setValue (const double val)
 	VSlider::setValue (val);
 	valueDisplay.setText(BUtilities::to_string (value, valFormat));
 }
+
+void VSliderValue::setValuePosition (const LabelPosition pos)
+{
+	valPosition = pos;
+	update();
+}
+
+LabelPosition VSliderValue::getValuePosition () const {return valPosition;}
 
 void VSliderValue::setValueFormat (const std::string& valueFormat)
 {
@@ -116,7 +131,7 @@ void VSliderValue::updateCoords ()
 	double dw = (w < h ? w : h);
 	double dh = dw / 2.2;
 	double dx = getXOffset () + w / 2 - dw / 2;
-	double dy = getYOffset ();
+	double dy = (valPosition == LABEL_TOP ? getYOffset() : getYOffset() + h - dh);
 	displayArea = BUtilities::RectArea (dx, dy, dw, dh);
 
 	double h2 = h - displayArea.getHeight();
@@ -125,12 +140,45 @@ void VSliderValue::updateCoords ()
 	scaleArea = BUtilities::RectArea
 	(
 		getXOffset () + w / 2 - knobRadius / 2,
-		getYOffset () + displayArea.getHeight() + knobRadius,
+		(valPosition == LABEL_TOP ? getYOffset () + displayArea.getHeight() + knobRadius : getYOffset () + knobRadius),
 		knobRadius,
 		h2 - 2 * knobRadius
 	);
 	scaleYValue = scaleArea.getY() + (1 - getRelativeValue ()) * scaleArea.getHeight();
 	knobPosition = BUtilities::Point (scaleArea.getX() + scaleArea.getWidth() / 2, scaleYValue);
+}
+
+void VSliderValue::displayDraggedCallback (BEvents::Event* event)
+{
+	if (event && event->getWidget())
+	{
+		BWidgets::Label* l = (BWidgets::Label*)event->getWidget();
+		VSliderValue* d = (VSliderValue*)l->getParent();
+		if (d && (!l->getEditMode())) d->VSliderValue::onPointerDragged ((BEvents::PointerEvent*)event);
+	}
+}
+
+void VSliderValue::displayMessageCallback (BEvents::Event* event)
+{
+	if (event && event->getWidget())
+	{
+		BWidgets::Label* l = (BWidgets::Label*)event->getWidget();
+		VSliderValue* d = (VSliderValue*)l->getParent();
+		if (d)
+		{
+			double val;
+			try {val = BUtilities::stof (l->getText());}
+			catch (std::invalid_argument &ia)
+			{
+				fprintf (stderr, "%s\n", ia.what());
+				d->update();
+				return;
+			}
+
+			d->setValue (val);
+			d->update();
+		}
+	}
 }
 
 }
