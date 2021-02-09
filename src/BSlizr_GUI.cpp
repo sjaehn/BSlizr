@@ -75,7 +75,7 @@ const std::string messageStrings[MAX_MSG + 1] =
 class BSlizr_GUI : public BWidgets::Window
 {
 public:
-	BSlizr_GUI (const char *bundle_path, const LV2_Feature *const *features, PuglNativeWindow parentWindow);
+	BSlizr_GUI (const char *bundle_path, const LV2_Feature *const *features, PuglNativeView parentWindow);
 	~BSlizr_GUI ();
 	void portEvent (uint32_t port_index, uint32_t buffer_size, uint32_t format, const void *buffer);
 	void send_record_on ();
@@ -217,7 +217,7 @@ private:
 };
 
 
-BSlizr_GUI::BSlizr_GUI (const char *bundle_path, const LV2_Feature *const *features, PuglNativeWindow parentWindow) :
+BSlizr_GUI::BSlizr_GUI (const char *bundle_path, const LV2_Feature *const *features, PuglNativeView parentWindow) :
 	Window (800, 560, "B.Slizr", parentWindow, true, PUGL_MODULE, 0),
 	controller (NULL), write_function (NULL),
 
@@ -917,7 +917,7 @@ LV2UI_Handle instantiate (const LV2UI_Descriptor *descriptor, const char *plugin
 						  LV2UI_Write_Function write_function, LV2UI_Controller controller, LV2UI_Widget *widget,
 						  const LV2_Feature *const *features)
 {
-	PuglNativeWindow parentWindow = 0;
+	PuglNativeView parentWindow = 0;
 	LV2UI_Resize* resize = NULL;
 
 	if (strcmp(plugin_uri, BSLIZR_URI) != 0)
@@ -928,7 +928,7 @@ LV2UI_Handle instantiate (const LV2UI_Descriptor *descriptor, const char *plugin
 
 	for (int i = 0; features[i]; ++i)
 	{
-		if (!strcmp(features[i]->URI, LV2_UI__parent)) parentWindow = (PuglNativeWindow) features[i]->data;
+		if (!strcmp(features[i]->URI, LV2_UI__parent)) parentWindow = (PuglNativeView) features[i]->data;
 		else if (!strcmp(features[i]->URI, LV2_UI__resize)) resize = (LV2UI_Resize*)features[i]->data;
 	}
 	if (parentWindow == 0) std::cerr << "BSlizr.lv2#GUI: No parent window.\n";
@@ -991,8 +991,8 @@ static int callResize (LV2UI_Handle ui, int width, int height)
 	return 0;
 }
 
-static const LV2UI_Idle_Interface idle = {.idle = callIdle };
-static const LV2UI_Resize resize = {.ui_resize = callResize} ;
+static const LV2UI_Idle_Interface idle = {callIdle};
+static const LV2UI_Resize resize = {nullptr, callResize};
 
 static const void* extensionData(const char* uri)
 {
