@@ -397,7 +397,7 @@ static void cleanup (LV2_Handle instance)
 	delete inst;
 }
 
-const LV2_Descriptor descriptor =
+static const LV2_Descriptor descriptor =
 {
 		BSLIZR_URI,
 		instantiate,
