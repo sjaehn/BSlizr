@@ -352,7 +352,7 @@ void BSlizr::play(uint32_t start, uint32_t end)
 	}
 }
 
-LV2_Handle instantiate (const LV2_Descriptor* descriptor, double samplerate, const char* bundle_path, const LV2_Feature* const* features)
+static LV2_Handle instantiate (const LV2_Descriptor* descriptor, double samplerate, const char* bundle_path, const LV2_Feature* const* features)
 {
 	// New instance
 	BSlizr* instance;
@@ -379,19 +379,19 @@ LV2_Handle instantiate (const LV2_Descriptor* descriptor, double samplerate, con
 	return (LV2_Handle)instance;
 }
 
-void connect_port (LV2_Handle instance, uint32_t port, void *data)
+static void connect_port (LV2_Handle instance, uint32_t port, void *data)
 {
 	BSlizr* inst = (BSlizr*) instance;
 	inst->connect_port (port, data);
 }
 
-void run (LV2_Handle instance, uint32_t n_samples)
+static void run (LV2_Handle instance, uint32_t n_samples)
 {
 	BSlizr* inst = (BSlizr*) instance;
 	inst->run (n_samples);
 }
 
-void cleanup (LV2_Handle instance)
+static void cleanup (LV2_Handle instance)
 {
 	BSlizr* inst = (BSlizr*) instance;
 	delete inst;
