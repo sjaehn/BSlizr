@@ -382,19 +382,19 @@ static LV2_Handle instantiate (const LV2_Descriptor* descriptor, double samplera
 static void connect_port (LV2_Handle instance, uint32_t port, void *data)
 {
 	BSlizr* inst = (BSlizr*) instance;
-	inst->connect_port (port, data);
+	if (inst) inst->connect_port (port, data);
 }
 
 static void run (LV2_Handle instance, uint32_t n_samples)
 {
 	BSlizr* inst = (BSlizr*) instance;
-	inst->run (n_samples);
+	if (inst) inst->run (n_samples);
 }
 
 static void cleanup (LV2_Handle instance)
 {
 	BSlizr* inst = (BSlizr*) instance;
-	delete inst;
+	if (inst) delete inst;
 }
 
 static const LV2_Descriptor descriptor =
