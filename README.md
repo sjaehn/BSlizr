@@ -66,11 +66,9 @@ Notes:
 
 What's new
 -----------
-* Improved stability
-* Improved visibility of sliders
-* gcc10/std problem fixed
-* Editable dial and slider values
-* Update pugl
+* Check dependencies / versions
+* Support older systems (gcc < 8, clang < 10, lv2 < 1.18)
+* Bugfixes
 
 Usage
 -----
