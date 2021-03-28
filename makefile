@@ -14,6 +14,7 @@ INSTALL ?= install
 INSTALL_PROGRAM ?= $(INSTALL)
 INSTALL_DATA ?= $(INSTALL) -m644
 STRIP ?= strip
+UWU ?= 0
 
 PREFIX ?= /usr/local
 LV2DIR ?= $(PREFIX)/lib/lv2
@@ -25,6 +26,13 @@ LDFLAGS += -shared -Wl,-z,relro,-z,now
 STRIPFLAGS += -s --strip-program=$(STRIP)
 
 GUIPPFLAGS += -DPUGL_HAVE_CAIRO
+
+ifeq ($(UWU), 1)
+  GUIPPFLAGS += -DUWU
+  GUIBGFILE = surface2.png
+else
+  GUIBGFILE = surface.png
+endif
 
 DSPCFLAGS += `$(PKG_CONFIG) --cflags $(LV2_LIBS)`
 GUICFLAGS += `$(PKG_CONFIG) --cflags $(GUI_LIBS)`
@@ -40,7 +48,7 @@ OBJ_EXT = .so
 DSP_OBJ = $(DSP)$(OBJ_EXT)
 GUI_OBJ = $(GUI)$(OBJ_EXT)
 B_OBJECTS = $(addprefix $(BUNDLE)/, $(DSP_OBJ) $(GUI_OBJ))
-FILES = manifest.ttl BSlizr.ttl surface.png LICENSE
+FILES = manifest.ttl BSlizr.ttl LICENSE
 B_FILES = $(addprefix $(BUNDLE)/, $(FILES))
 
 DSP_INCL = \
@@ -89,6 +97,7 @@ endif
 
 $(BUNDLE): clean $(DSP_OBJ) $(GUI_OBJ)
 	@cp $(FILES) $(BUNDLE)
+	@cp $(GUIBGFILE) $(BUNDLE)/surface.png
 
 all: $(BUNDLE)
 
@@ -136,3 +145,5 @@ clean:
 	@rm -rf $(BUNDLE)
 
 .PHONY: all install install-strip uninstall clean
+
+.NOTPARALLEL:
