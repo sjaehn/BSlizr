@@ -241,7 +241,7 @@ BSlizr_GUI::BSlizr_GUI (const char *bundle_path, const LV2_Feature *const *featu
 	sequencesperbarLabel (250, 520, 140, 20, "label", BSLIZR_LABEL_SEQUENCES_PER_BAR),
 	nrStepsControl (400, 492, 380, 28, "slider", 1.0, 1.0, MAXSTEPS, 1.0, "%2.0f"),
 	nrStepsLabel (400, 520, 380, 20, "label", BSLIZR_LABEL_NUMBER_OF_STEPS),
-	stepshapeLabel (33, 323, 80, 20, "label", BSLIZR_LABEL_STEP_SHAPE),
+	stepshapeLabel (33, 323, 100, 20, "label", BSLIZR_LABEL_STEP_SHAPE),
 	sequencemonitorLabel (263, 73, 140, 20, "label", BSLIZR_LABEL_SEQUENCE_MONITOR),
 	messageLabel (420, 73, 280, 20, "hilabel", ""),
 
@@ -452,7 +452,7 @@ void BSlizr_GUI::resizeGUI()
 	RESIZE (sequencesperbarLabel, 250, 520, 140, 20, sz);
 	RESIZE (nrStepsControl, 400, 492, 380, 28, sz);
 	RESIZE (nrStepsLabel, 400, 520, 380, 20, sz);
-	RESIZE (stepshapeLabel, 33, 323, 80, 20, sz);
+	RESIZE (stepshapeLabel, 33, 323, 100, 20, sz);
 	RESIZE (sequencemonitorLabel, 263, 73, 140, 20, sz);
 	RESIZE (messageLabel, 420, 73, 280, 20,sz);
 	RESIZE (sContainer, 260, 330, 480, 130, sz);
