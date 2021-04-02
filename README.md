@@ -110,7 +110,7 @@ and edit the parameters. You can also provide a background image at `./surface_S
 
 ## What's new
 
-* Locales: DE
+* Locales: DE, IT
 
 Links
 -----
