@@ -1,0 +1,8 @@
+#define BSLIZR_LABEL_MONITOR "Monitow"
+#define BSLIZR_LABEL_ATTACK "Attack"
+#define BSLIZR_LABEL_RELEASE "Wewease"
+#define BSLIZR_LABEL_SEQUENCES_PER_BAR "Sequences pew baw"
+#define BSLIZR_LABEL_NUMBER_OF_STEPS "Numbew of steps"
+#define BSLIZR_LABEL_STEP_SHAPE "Step shape"
+#define BSLIZR_LABEL_SEQUENCE_MONITOR "Sequence monitow"
+#define BSLIZR_LABEL_JACK_STOP "Jack twanspowt off or hawted."

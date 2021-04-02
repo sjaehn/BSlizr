@@ -1,0 +1,8 @@
+#define BSLIZR_LABEL_MONITOR "Монитор"
+#define BSLIZR_LABEL_ATTACK "Атака"
+#define BSLIZR_LABEL_RELEASE "Затухание"
+#define BSLIZR_LABEL_SEQUENCES_PER_BAR "Секвенции / такт"
+#define BSLIZR_LABEL_NUMBER_OF_STEPS "Количество шагов"
+#define BSLIZR_LABEL_STEP_SHAPE "Форма шаги"
+#define BSLIZR_LABEL_SEQUENCE_MONITOR "Монитор секвенции"
+#define BSLIZR_LABEL_JACK_STOP "Jack transport off or halted."

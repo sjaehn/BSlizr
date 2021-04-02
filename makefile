@@ -14,7 +14,6 @@ INSTALL ?= install
 INSTALL_PROGRAM ?= $(INSTALL)
 INSTALL_DATA ?= $(INSTALL) -m644
 STRIP ?= strip
-UWU ?= 0
 
 PREFIX ?= /usr/local
 LV2DIR ?= $(PREFIX)/lib/lv2
@@ -27,9 +26,27 @@ STRIPFLAGS += -s --strip-program=$(STRIP)
 
 GUIPPFLAGS += -DPUGL_HAVE_CAIRO
 
-ifeq ($(UWU), 1)
+LANGUAGE ?= EN
+
+ifdef UWU
   GUIPPFLAGS += -DUWU
   GUIBGFILE = surface2.png
+  LANGUAGE = UWU
+  SKIN = UWU
+else
+  GUIBGFILE = surface.png
+endif
+
+ifeq ($(shell test -e src/Locale_$(LANGUAGE).hpp && echo -n yes),yes)
+  GUIPPFLAGS += -DLOCALEFILE=\"Locale_$(LANGUAGE).hpp\"
+endif
+
+ifeq ($(shell test -e src/Skin_$(SKIN).hpp && echo -n yes),yes)
+  GUIPPFLAGS += -DSKINFILE=\"Skin_$(SKIN).hpp\"
+endif
+
+ifeq ($(shell test -e surface_$(SKIN).png && echo -n yes),yes)
+  GUIBGFILE = surface_$(SKIN).png
 else
   GUIBGFILE = surface.png
 endif

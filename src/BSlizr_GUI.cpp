@@ -23,6 +23,7 @@
 #include <cstdlib>
 #include <cmath>
 #include <exception>
+#include <map>
 #include <lv2/lv2plug.in/ns/extensions/ui/ui.h>
 #include <lv2/lv2plug.in/ns/ext/atom/atom.h>
 #include <lv2/lv2plug.in/ns/ext/atom/forge.h>
@@ -39,6 +40,18 @@
 #include "main.h"
 #include "screen.h"
 
+#ifdef LOCALEFILE
+#include LOCALEFILE
+#else
+#include "Locale_EN.hpp"
+#endif
+
+#ifdef SKINFILE
+#include SKINFILE
+#else
+#include "Skin_Default.hpp"
+#endif
+
 #ifndef MESSAGENR_
 #define MESSAGENR_
 enum MessageNr
@@ -51,28 +64,6 @@ enum MessageNr
 
 #define SCALEMIN -60
 #define SCALEMAX 30
-
-#ifndef UWU
-#define CAIRO_BG_COLOR 0.0, 0.0, 0.0, 1.0
-#define CAIRO_TRANSPARENT 0.0, 0.0, 0.0, 0.0
-#else
-#define CAIRO_BG_COLOR 1.0, 0.8, 0.8, 1.0
-#define CAIRO_TRANSPARENT 1.0, 0.8, 0.8, 0.0
-#endif
-
-#define CAIRO_BG_COLOR2 0.2, 0.2, 0.2, 1.0
-#define CAIRO_FG_COLOR 1.0, 1.0, 1.0, 1.0
-
-#ifndef UWU
-#define CAIRO_INK1 0.0, 1.0, 0.4
-#define CAIRO_INK2 0.8, 0.6, 0.2
-#else
-#define CAIRO_INK1 1.0, 0.2, 0.4
-#define CAIRO_INK2 1.0, 0.2, 0.4
-#endif
-
-
-
 #define BG_FILE "surface.png"
 
 #define DB_CO(g) ((g) > -90.0f ? powf(10.0f, (g) * 0.05f) : 0.0f)
@@ -84,7 +75,7 @@ enum MessageNr
 const std::string messageStrings[MAX_MSG + 1] =
 {
 	"",
-	"*** Jack transport off or halted. ***"
+	"*** " BSLIZR_LABEL_JACK_STOP " ***"
 };
 
 class BSlizr_GUI : public BWidgets::Window
@@ -173,27 +164,15 @@ private:
 
 
 	// Definition of styles
-#ifndef UWU
-	BColors::ColorSet fgColors = {{{0.0, 0.75, 0.2, 1.0}, {0.2, 1.0, 0.6, 1.0}, {0.0, 0.2, 0.0, 1.0}, {0.0, 0.0, 0.0, 0.0}}};
-	BColors::ColorSet txColors = {{{0.0, 1.0, 0.4, 1.0}, {1.0, 1.0, 1.0, 1.0}, {0.0, 0.5, 0.0, 1.0}, {0.0, 0.0, 0.0, 0.0}}};
-	BColors::ColorSet bgColors = {{{0.15, 0.15, 0.15, 1.0}, {0.3, 0.3, 0.3, 1.0}, {0.05, 0.05, 0.05, 1.0}, {0.0, 0.0, 0.0, 0.0}}};
+	BColors::ColorSet fgColors = BSLIZR_FG_COLORS;
+	BColors::ColorSet txColors = BSLIZR_TX_COLORS;
+	BColors::ColorSet bgColors = BSLIZR_BG_COLORS;
 	BColors::Color ink = {0.0, 0.75, 0.2, 1.0};
 
 	BStyles::Border border = {{ink, 1.0}, 0.0, 2.0, 0.0};
 	BStyles::Fill widgetBg = BStyles::noFill;
-	BStyles::Fill screenBg = BStyles::Fill (BColors::Color (0.0, 0.0, 0.0, 0.75));
+	BStyles::Fill screenBg = BStyles::Fill (BColors::Color (BSLIZR_SCREEN_BG_COLORS));
 	BStyles::Border screenBorder = BStyles::Border (BStyles::Line (BColors::Color (0.0, 0.0, 0.0, 0.75), 4.0));
-#else
-	BColors::ColorSet fgColors = {{{1.0, 0.2, 0.4, 1.0}, {1.0, 0.4, 0.8, 1.0}, {0.5, 0.0, 0.2, 1.0}, {0.0, 0.0, 0.0, 0.0}}};
-	BColors::ColorSet txColors = {{{1.0, 0.1, 0.2, 1.0}, {1.0, 0.2, 0.4, 1.0}, {0.5, 0.0, 0.2, 1.0}, {0.0, 0.0, 0.0, 0.0}}};
-	BColors::ColorSet bgColors = {{{0.5, 0.5, 0.5, 1.0}, {0.8, 0.8, 0.8, 1.0}, {0.1, 0.1, 0.1, 1.0}, {0.0, 0.0, 0.0, 0.0}}};
-	BColors::Color ink = {0.0, 0.75, 0.2, 1.0};
-
-	BStyles::Border border = {{ink, 1.0}, 0.0, 2.0, 0.0};
-	BStyles::Fill widgetBg = BStyles::noFill;
-	BStyles::Fill screenBg = BStyles::Fill (BColors::Color (1.0, 0.8, 0.8, 0.75));
-	BStyles::Border screenBorder = BStyles::Border (BStyles::Line (BColors::Color (0.0, 0.0, 0.0, 0.75), 4.0));
-#endif
 	BStyles::Font defaultFont = BStyles::Font ("Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL, 12.0,
 						   BStyles::TEXT_ALIGN_CENTER, BStyles::TEXT_VALIGN_MIDDLE);
 	BStyles::StyleSet defaultStyles = {"default", {{"background", STYLEPTR (&BStyles::noFill)},
@@ -247,46 +226,24 @@ private:
 BSlizr_GUI::BSlizr_GUI (const char *bundle_path, const LV2_Feature *const *features, PuglNativeView parentWindow) :
 	Window (800, 560, "B.Slizr", parentWindow, true, PUGL_MODULE, 0),
 	controller (NULL), write_function (NULL),
-
-#ifndef UWU
 	mContainer (0, 0, 800, 560, "main"),
 	sContainer (260, 330, 480, 130, "widget"),
 	monitorSwitch (690, 25, 40, 16, "switch", 0.0),
 	monitorDisplay (260, 70, 480, 240, "monitor"),
-	monitorLabel (680, 45, 60, 20, "label", "Monitor"),
+	monitorLabel (680, 45, 60, 20, "label", BSLIZR_LABEL_MONITOR),
 	scaleControl (760, 80, 14, 230, "slider", 0.0, SCALEMIN, SCALEMAX, 0.1),
 	stepshapeDisplay (30, 320, 180, 140, "monitor"),
 	attackControl (40, 465, 50, 60, "dial", 0.2, 0.01, 1.0, 0.01, "%1.2f"),
-	attackLabel (20, 520, 90, 20, "label", "Attack"),
+	attackLabel (20, 520, 90, 20, "label", BSLIZR_LABEL_ATTACK),
 	releaseControl (150, 465, 50, 60, "dial", 0.2, 0.01, 1.0, -0.01, "%1.2f"),
-	releaseLabel (130, 520, 90, 20, "label", "Release"),
+	releaseLabel (130, 520, 90, 20, "label", BSLIZR_LABEL_RELEASE),
 	sequencesperbarControl (260, 492, 120, 28, "slider", 1.0, 1.0, 8.0, 1.0, "%1.0f"),
-	sequencesperbarLabel (250, 520, 140, 20, "label", "Sequences per bar"),
+	sequencesperbarLabel (250, 520, 140, 20, "label", BSLIZR_LABEL_SEQUENCES_PER_BAR),
 	nrStepsControl (400, 492, 380, 28, "slider", 1.0, 1.0, MAXSTEPS, 1.0, "%2.0f"),
-	nrStepsLabel (400, 520, 380, 20, "label", "Number of steps"),
-	stepshapeLabel (33, 323, 80, 20, "label", "Step shape"),
-	sequencemonitorLabel (263, 73, 120, 20, "label", "Sequence monitor"),
+	nrStepsLabel (400, 520, 380, 20, "label", BSLIZR_LABEL_NUMBER_OF_STEPS),
+	stepshapeLabel (33, 323, 80, 20, "label", BSLIZR_LABEL_STEP_SHAPE),
+	sequencemonitorLabel (263, 73, 140, 20, "label", BSLIZR_LABEL_SEQUENCE_MONITOR),
 	messageLabel (420, 73, 280, 20, "hilabel", ""),
-#else
-	mContainer (0, 0, 800, 560, "main"),
-	sContainer (260, 330, 480, 130, "widget"),
-	monitorSwitch (690, 25, 40, 16, "switch", 0.0),
-	monitorDisplay (260, 70, 480, 240, "monitor"),
-	monitorLabel (680, 45, 60, 20, "label", "Monitow"),
-	scaleControl (760, 80, 14, 230, "slider", 0.0, SCALEMIN, SCALEMAX, 0.1),
-	stepshapeDisplay (30, 320, 180, 140, "monitor"),
-	attackControl (40, 465, 50, 60, "dial", 0.2, 0.01, 1.0, 0.01, "%1.2f"),
-	attackLabel (20, 520, 90, 20, "label", "Attack"),
-	releaseControl (150, 465, 50, 60, "dial", 0.2, 0.01, 1.0, -0.01, "%1.2f"),
-	releaseLabel (130, 520, 90, 20, "label", "Wewease"),
-	sequencesperbarControl (260, 492, 120, 28, "slider", 1.0, 1.0, 8.0, 1.0, "%1.0f"),
-	sequencesperbarLabel (250, 520, 140, 20, "label", "Sequences pew baw"),
-	nrStepsControl (400, 492, 380, 28, "slider", 1.0, 1.0, MAXSTEPS, 1.0, "%2.0f"),
-	nrStepsLabel (400, 520, 380, 20, "label", "Numbew of steps"),
-	stepshapeLabel (33, 323, 80, 20, "label", "Step shape"),
-	sequencemonitorLabel (263, 73, 120, 20, "label", "Sequence monitow"),
-	messageLabel (420, 73, 280, 20, "hilabel", ""),
-#endif
 
 	surface (NULL), cr1 (NULL), cr2 (NULL), cr3 (NULL), cr4 (NULL), pat1 (NULL), pat2 (NULL), pat3 (NULL), pat4 (NULL), pat5 (NULL),
 	pluginPath (bundle_path ? std::string (bundle_path) : std::string ("")),  sz (1.0), bgImageSurface (nullptr),
@@ -496,7 +453,7 @@ void BSlizr_GUI::resizeGUI()
 	RESIZE (nrStepsControl, 400, 492, 380, 28, sz);
 	RESIZE (nrStepsLabel, 400, 520, 380, 20, sz);
 	RESIZE (stepshapeLabel, 33, 323, 80, 20, sz);
-	RESIZE (sequencemonitorLabel, 263, 73, 120, 20, sz);
+	RESIZE (sequencemonitorLabel, 263, 73, 140, 20, sz);
 	RESIZE (messageLabel, 420, 73, 280, 20,sz);
 	RESIZE (sContainer, 260, 330, 480, 130, sz);
 	for (int i = 0; i < MAXSTEPS; ++i) {RESIZE (stepControl[i], (i + 0.5) * 480 / nrSteps - 10, 0, 28, 130, sz);}

@@ -1,0 +1,8 @@
+#define BSLIZR_LABEL_MONITOR "Monitor"
+#define BSLIZR_LABEL_ATTACK "Attack"
+#define BSLIZR_LABEL_RELEASE "Release"
+#define BSLIZR_LABEL_SEQUENCES_PER_BAR "Sequences per bar"
+#define BSLIZR_LABEL_NUMBER_OF_STEPS "Number of steps"
+#define BSLIZR_LABEL_STEP_SHAPE "Step shape"
+#define BSLIZR_LABEL_SEQUENCE_MONITOR "Sequence monitor"
+#define BSLIZR_LABEL_JACK_STOP "Jack transport off or halted."
