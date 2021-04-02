@@ -156,7 +156,7 @@
      inkscape:window-width="1920"
      units="px"
      showgrid="false"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer5"
      inkscape:document-units="px"
      inkscape:cy="543.79172"
      inkscape:cx="641.6015"
@@ -239,7 +239,7 @@
        d="m 209.02083,294.35416 a 9.2617369,8.0739632 0 0 1 -9.46036,7.87933 9.2617369,8.0739632 0 0 1 -9.0587,-8.23024 9.2617369,8.0739632 0 0 1 9.42161,-7.91455 9.2617369,8.0739632 0 0 1 9.099,8.19638" />
     <path
        id="path1060-35"
-       style="opacity:0.664228;fill:#ff3984;fill-opacity:1;stroke:#a00060;stroke-width:0.486341;stroke-linecap:round;stroke-opacity:0.00092319;filter:url(#filter920)"
+       style="opacity:0.664228;fill:#ff3984;fill-opacity:1;stroke:#a00060;stroke-width:0.486341;stroke-linecap:round;stroke-opacity:0.000923187;filter:url(#filter920)"
        d="m 187.85306,252.06671 c -0.0871,2.95682 -1.66898,4.8672 -6.75683,5.23415 -3.63808,0.26239 -7.18185,-2.59623 -6.46996,-5.46725 1.05449,-4.25272 3.08189,-5.30916 6.72915,-5.25754 3.64726,0.0516 6.55461,2.48743 6.49875,5.44475"
        sodipodi:nodetypes="csssc" />
     <path
@@ -287,17 +287,6 @@
          x="30.162498"
          id="tspan4805"
          sodipodi:role="line">wIzw</tspan></text>
-    <text
-       id="text1010"
-       y="16.007292"
-       x="75.935425"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;line-height:6.61458px;font-family:'Good Times';-inkscape-font-specification:'Good Times';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       xml:space="preserve"><tspan
-         style="font-size:3.52778px;fill:#ffffff;stroke-width:0.264583"
-         y="16.007292"
-         x="75.935425"
-         id="tspan1008"
-         sodipodi:role="line">V 1.2.13</tspan></text>
     <g
        id="g1197"
        style="enable-background:new"
