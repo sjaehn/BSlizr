@@ -1,0 +1,8 @@
+#define BSLIZR_LABEL_MONITOR "Monitor"
+#define BSLIZR_LABEL_ATTACK "Attack"
+#define BSLIZR_LABEL_RELEASE "Release"
+#define BSLIZR_LABEL_SEQUENCES_PER_BAR "Sequenzen pro Takt"
+#define BSLIZR_LABEL_NUMBER_OF_STEPS "Anzahl Schritte"
+#define BSLIZR_LABEL_STEP_SHAPE "Schrittform"
+#define BSLIZR_LABEL_SEQUENCE_MONITOR "Sequenzmonitor"
+#define BSLIZR_LABEL_JACK_STOP "Jack-Transport ist angehalten."

@@ -98,20 +98,19 @@ The interface is divided into three parts: step controls, monitor and step shape
 * Monitor : Visualization of a single step
 
 
-###Customize
+##Customize
 
 You can create customized builds of B.Slizr using the parameters `LANGUAGE` and `SKIN` (e.g.,
 `make LANGUAGE=RU SKIN=UWU`). To create a new language pack, copy `src/Locale_EN.hpp` and edit
 the text for the respective definitions. But do not change or delete any definition symbol!
 
-To create a new skin, duplicate `src/Skin_Default.hpp`, rename it to `src/Skin_Default.hpp` 
+To create a new skin, duplicate `src/Skin_Default.hpp`, rename it to `src/Skin_Default.hpp`
 and edit the parameters. You can also provide a background image at `./surface_SkinName.png`.
 
 
 ## What's new
 
-* Custom language and skin builds
-* Easteregg: UwU
+* Locales: DE
 
 Links
 -----
