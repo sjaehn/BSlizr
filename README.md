@@ -110,8 +110,13 @@ and edit the parameters. You can also provide a background image at `./surface_S
 
 ## What's new
 
-* Locales: DE, IT
+* Locales: DE, IT, FR
 
-Links
------
+
+## Acknowledgments
+
+* Thanks to LAM and Sahaathyva for translations
+
+## Links
+
 * Video: https://www.youtube.com/watch?v=gLI2ozKdNDk
