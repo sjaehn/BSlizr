@@ -4,5 +4,5 @@
 #define BSLIZR_LABEL_SEQUENCES_PER_BAR "Séquences par mesure"
 #define BSLIZR_LABEL_NUMBER_OF_STEPS "Nombre de pas"
 #define BSLIZR_LABEL_STEP_SHAPE "Forme des pas"
-#define BSLIZR_LABEL_SEQUENCE_MONITOR "SMoniteur de séquence"
+#define BSLIZR_LABEL_SEQUENCE_MONITOR "Moniteur de séquence"
 #define BSLIZR_LABEL_JACK_STOP "Transport Jack éteint ou arrêté."
