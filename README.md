@@ -11,7 +11,8 @@ Description: LV2 audio effect plugin for chopping stereo audio input signals. Ea
 a) Install the bslizr package for your system
 * [Arch linux](https://www.archlinux.org/packages/community/x86_64/bslizr/) by David Runge
 * [NixOS](https://github.com/NixOS/nixpkgs/blob/master/pkgs/applications/audio/bslizr/default.nix) by Bart Brouns
-* [Debian](https://kx.studio/Repositories:Plugins) by falkTX
+* [openSUSE](https://software.opensuse.org/package/BSlizr)
+* [Ubuntu](https://launchpad.net/bslizr) by Eirch Eickmeyer
 * Check https://repology.org/project/bslizr/versions for other systems
 
 b) Build your own binaries in the following three steps.
@@ -98,7 +99,7 @@ The interface is divided into three parts: step controls, monitor and step shape
 * Monitor : Visualization of a single step
 
 
-##Customize
+## Customize
 
 You can create customized builds of B.Slizr using the parameters `LANGUAGE` and `SKIN` (e.g.,
 `make LANGUAGE=RU SKIN=UWU`). To create a new language pack, copy `src/Locale_EN.hpp` and edit
@@ -111,6 +112,7 @@ and edit the parameters. You can also provide a background image at `./surface_S
 ## What's new
 
 * Locales: DE, IT, FR
+* Do not mute if transport stopped
 
 
 ## Acknowledgments

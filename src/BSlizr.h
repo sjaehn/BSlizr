@@ -64,6 +64,7 @@ private:
 	float* prevStep;
 	float* actStep;
 	float* nextStep;
+	float pos;
 
 	// Audio buffers
 	float* audioInput1;

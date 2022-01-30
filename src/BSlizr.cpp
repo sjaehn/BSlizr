@@ -30,7 +30,7 @@ BSlizr::BSlizr (double samplerate, const LV2_Feature* const* features) :
 	map(NULL),
 	rate(samplerate), bpm(120.0f), speed(1), position(0),
 	beatsPerBar (4), beatUnit (4), refFrame(0),
-	prevStep(NULL), actStep(NULL), nextStep(NULL),
+	prevStep(NULL), actStep(NULL), nextStep(NULL), pos (0),
 	audioInput1(NULL), audioInput2(NULL), audioOutput1(NULL), audioOutput2(NULL),
 	sequencesperbar (4), nrSteps(16), attack(0.2), release (0.2),
 	controlPort1(NULL), controlPort2(NULL),  notifyPort(NULL),
@@ -271,23 +271,18 @@ void BSlizr::notifyMessageToGui()
 
 void BSlizr::play(uint32_t start, uint32_t end)
 {
-	float vol, relpos, pos, iStepf, iStepFrac, effect1, effect2;
+	float vol, relpos, iStepf, iStepFrac, effect1, effect2;
 	uint32_t steps = (uint32_t) nrSteps;
 	uint32_t iStep;
-
-	//Silence if halted or bpm == 0
-	if ((speed == 0.0f) || (bpm < 1.0f))
-	{
-		memset(audioOutput1,0,(end-start)*sizeof(float));
-		memset(audioOutput2,0,(end-start)*sizeof(float));
-		return;
-	}
 
 	for (uint32_t i = start; i < end; ++i)
 	{
 		// Interpolate position within the loop
-		relpos = (i - refFrame) * speed / (rate / (bpm / 60)) * sequencesperbar / beatsPerBar;	// Position relative to reference frame
-		pos = MODFL (position + relpos);
+		if ((speed != 0.0f) && (bpm >= 1.0f))
+		{
+			relpos = (i - refFrame) * speed / (rate / (bpm / 60)) * sequencesperbar / beatsPerBar;	// Position relative to reference frame
+			pos = MODFL (position + relpos);
+		}
 		iStepf = (pos * steps);
 		iStep = (uint32_t)iStepf;											// Calculate step number
 		iStepFrac = iStepf - iStep;											// Calculate fraction of active step

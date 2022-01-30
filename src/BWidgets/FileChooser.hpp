@@ -20,6 +20,17 @@
 
 #define BWIDGETS_DEFAULT_FILECHOOSER_WIDTH 400
 #define BWIDGETS_DEFAULT_FILECHOOSER_HEIGHT 320
+#define BWIDGETS_DEFAULT_FILECHOOSER_OK_INDEX 0
+#define BWIDGETS_DEFAULT_FILECHOOSER_OPEN_INDEX 1
+#define BWIDGETS_DEFAULT_FILECHOOSER_CANCEL_INDEX 2
+#define BWIDGETS_DEFAULT_FILECHOOSER_FILE_EXISTS_INDEX 3
+#define BWIDGETS_DEFAULT_FILECHOOSER_FILE_NOT_EXISTS_INDEX 4
+#define BWIDGETS_DEFAULT_FILECHOOSER_NEW_FOLDER_INDEX 5
+#define BWIDGETS_DEFAULT_FILECHOOSER_NEW_FOLDER_FAIL_INDEX 6
+
+#ifndef PATH_SEPARATOR
+#define PATH_SEPARATOR "/"
+#endif
 
 #include "PopupListBox.hpp"
 #include "TextButton.hpp"
@@ -50,6 +61,8 @@ public:
 		     const std::string& path, const std::vector<FileFilter>& filters);
 	FileChooser (const double x, const double y, const double width, const double height, const std::string& name,
 		     const std::string& path, const std::vector<FileFilter>& filters, const std::string& buttonText);
+	FileChooser (const double x, const double y, const double width, const double height, const std::string& name,
+		     const std::string& path, const std::vector<FileFilter>& filters, const std::vector<std::string>& texts);
 
 
 	FileChooser (const FileChooser& that);
@@ -82,7 +95,7 @@ public:
 
 	/**
 	 * Sets the file name of the file chooser.
-	 * @param filename	File name 
+	 * @param filename	File name
 	 */
 	virtual void setFileName (const std::string& filename);
 
@@ -123,6 +136,18 @@ public:
 	std::string getButtonText ();
 
 	/**
+	 * Sets the text of the labels.
+	 * @param texts	Vectors containing the texts as strings
+	 */
+	void setLabels (const std::vector<std::string>& texts);
+
+	/**
+	 * Gets the text of the labels.
+	 * @return	Vectors containing the texts as strings
+	 */
+	std::vector<std::string> getLabels () const;
+
+	/**
 	 * Resizes the widget, redraw and emits a BEvents::ExposeEvent if the
 	 * widget is visible. If no parameters are given, the widget will be
 	 * resized to the size of the containing child widgets or to the text
@@ -158,15 +183,21 @@ public:
 	static void filterPopupListBoxClickedCallback (BEvents::Event* event);
 	static void cancelButtonClickedCallback (BEvents::Event* event);
 	static void okButtonClickedCallback (BEvents::Event* event);
+	static void confirmCancelButtonClickedCallback (BEvents::Event* event);
+	static void confirmOkButtonClickedCallback (BEvents::Event* event);
+	static void newFolderButtonClickedCallback (BEvents::Event* event);
+	static void createCancelButtonClickedCallback (BEvents::Event* event);
+	static void createOkButtonClickedCallback (BEvents::Event* event);
 
 protected:
 
 	void enterDir ();
+	void processFileSelected();
 
 	std::vector<FileFilter> filters;
 	std::vector<std::string> dirs;
 	std::vector<std::string> files;
-	std::string okButtonText;
+	std::vector<std::string> labels;
 	BColors::ColorSet bgColors;
 	Label pathNameBox;
 	ListBox fileListBox;
@@ -178,11 +209,33 @@ protected:
 	Label fileListBoxFileLabel;
 	Label fileListBoxDirLabel;
 	Label filterPopupListBoxFilterLabel;
-	//BStyles::Font fileFont;
-	//BStyles::Font dirFont;
-	//BStyles::Font filterFont;
+
+	Widget confirmBox;
+	Label confirmLabel;
+	TextButton confirmCancelButton;
+	TextButton confirmOkButton;
+
+	class NewFolderButton: public Button
+	{
+	public:
+		NewFolderButton (const double x, const double y, const double width, const double height, const std::string& name, double defaultValue = 0.0);
+
+	protected:
+		virtual void draw (const BUtilities::RectArea& area) override;
+	};
+
+	NewFolderButton newFolderButton;
+
+	Widget createBox;
+	Label createLabel;
+	Label createInput;
+	Label createError;
+	TextButton createCancelButton;
+	TextButton createOkButton;
 
 	virtual std::function<void (BEvents::Event*)> getFileListBoxClickedCallback();
+
+	bool isDir (const std::string& path, const std::string& name) const;
 };
 
 }
